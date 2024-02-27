@@ -180,3 +180,10 @@ img {
     width: 97vw;
   }
 }
+
+@media screen and (width < 500px) {
+  .App section {
+    padding-bottom: 6em;
+    margin-bottom: 1em;
+  }
+}
