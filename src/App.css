@@ -86,7 +86,7 @@ form {
   height: 10vh;
   position: fixed;
   bottom: 0;
-  background-color: rgb(243, 239, 239);
+  background-color: rgba(243, 239, 239, 0.853);
   width: 100%;
   display: flex;
   font-size: 1.5rem;
