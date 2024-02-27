@@ -5,7 +5,7 @@ import 'firebase/compat/auth'
 
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { useCollectionData } from 'react-firebase-hooks/firestore'
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
 
 const firebaseConfig = {
@@ -31,6 +31,7 @@ function App() {
         <div className="name">
           <img src="logo.svg" alt="" className='logo'/>
           <h3>ChatWow</h3>
+          <SignOut />
         </div>
       </header>
       <section>
@@ -59,20 +60,24 @@ function SignIn() {
 function SignOut() {
   return auth.currentUser && (
 
-    <button onClick={() => auth.signOut()}>Sign Out</button>
+    <button onClick={() => auth.signOut()} className='sign_out_btn'>Sign Out</button>
 
   )
 }
 
 function ChatRoom() {
+
+  const dummy = useRef()
+
   const messagesRef = firestore.collection('messages');
-  const query = messagesRef.orderBy('createdAt').limit(30);
+  const query = messagesRef.orderBy('createdAt').limit(100);
 
   const [messages] = useCollectionData(query, {idField: 'id'})
   const [formValue, setFormValue] = useState('')
 
-  const sendMessage = async (e)=> {
+  const sendMessage = async(e) => {
     e.preventDefault();
+    setFormValue("")
 
     const { uid, photoURL } = auth.currentUser;
 
@@ -83,13 +88,15 @@ function ChatRoom() {
       photoURL
     })
 
-    setFormValue("")
+    dummy.current.scrollIntoView({ behaviour: 'smooth' })
   }
  
   return (
     <>
       <div>
         {messages && messages.map(msg => <ChatMessage key={msg.id} message={msg} />)}
+      
+        <div ref={dummy}></div>
       </div>
 
       <form action="" onSubmit={sendMessage}>
@@ -104,13 +111,13 @@ function ChatRoom() {
 }
 
 function ChatMessage(props) {
-  const { text, uid, photoUrl } = props.message
+  const { text, uid, photoURL } = props.message
 
   const messageClass = uid === auth.currentUser.uid ? 'sent' : 'received'
 
   return (
     <div className={`message ${messageClass}`}>
-      <img src={photoUrl} />
+      <img src={photoURL} />
       <p>{text}</p>
     </div>
   )
