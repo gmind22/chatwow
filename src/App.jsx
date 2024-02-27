@@ -9,7 +9,7 @@ import { useState, useRef } from 'react';
 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDQWWHtB3AknVWCl04EYk8oaFHfmgXdQcc",
+  apiKey: import.meta.env.VITE_API_KEY,
   authDomain: "chatwow-12530.firebaseapp.com",
   projectId: "chatwow-12530",
   storageBucket: "chatwow-12530.appspot.com",
